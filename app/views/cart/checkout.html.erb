@@ -1,0 +1,33 @@
+<h1>Thanks for Shopping with us!</h1>
+<h4> Let's review your order:</h4>
+
+<% @order.order_items.each do |key,value| %>
+	<ul>
+		<li><%= Product.find(key).name %></li>
+		<li> qty purchased: <%= value %></li>
+	</ul>
+<% end %>
+
+<p> 
+	Order Total: <%= number_to_currency(@order.grand_total) %>
+</p>
+
+
+<div>
+	<%= form_tag order_complete_path do %>
+		<article>
+			<label class="amount">
+				<span><%= number_to_currency @order.grand_total %></span>
+			</label>
+		</article>
+		<div>
+			<%= hidden_field_tag :order_id, @order.id %>
+		</div>
+
+		<script src="http://checkout.stripe.com/checkout.js"
+		class="stripe-button"
+		data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+		data-description="Order #<%= @order.id %>"
+		data-amount="<%= (@order.grand_total.to_f.round(2) * 100) %>"></script>
+	<% end %>
+</div>

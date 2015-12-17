@@ -1,0 +1,35 @@
+<h1>What You Got?</h1>
+
+<% @line_items.each do |lineitem| %>
+	<div class="row">
+		<div class="col-md-5 well">
+			<p><%= image_tag lineitem.product.image.url(:thumb) %></p>
+			<h4><%= lineitem.product.name %></h4>
+			<div id="show_li_<%= lineitem.id %>">
+				<p><%= lineitem.quantity %> @ <%= number_to_currency(lineitem.product.price) %>/ea.</p>
+				<p><strong>Total:</strong> <%= number_to_currency(lineitem.line_item_total) %></p>
+				<p>
+					<a id="edit_qty"><button class="btn btn-warning">Change Quantity?</button></a> <%= link_to "Remove from Cart?", remove_from_cart_path(id: lineitem.id), class: "btn btn-danger" %>
+				</p>
+			</div>
+			<div id="edit_li_<%= lineitem.id %>" class="invisible">
+				<%= form_tag(edit_li_path) do %>
+					<%= hidden_field_tag :id, lineitem.id %>
+					<div class="form-group">
+					<%= number_field_tag :qty, lineitem.quantity, class: "form-control" %>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<script>
+		$("#edit_qty").click(function(){
+			$("#edit_li_<%= lineitem.id %>").removeClass("invisible");
+			$("#show_li_<%= lineitem.id %>").addClass("invisible");
+		});
+	</script>
+<% end %>
+Add Comment
+<div>
+	<%= link_to "Proceed to Checkout?", checkout_path, class: "btn btn-warning"%>
+</div>

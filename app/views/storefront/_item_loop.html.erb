@@ -1,0 +1,50 @@
+<div class="row">
+	<% @products.each do |product| %>
+		<div class="col-md-4">
+			<div class="well">
+				<div class="panel-body">
+					<div style="height:150px;">
+						<%= image_tag product.image.url(:thumb) %>
+					</div>
+					<p> Found in: <%= link_to product.category.name, by_category_path(cat_id: product.category_id)%>
+					<p><a href="#" data-toggle="modal" data-target="#myModal_<%= product.id %>">
+						<span class="glyphicon glyphicon-plus"></span> quick info
+					</a></p>
+					<p><strong><%= number_to_currency product.price %></strong></p>
+					<p><%= product.name %>
+					<div style ="height:150px;">
+					
+				    </div>
+				  
+				    <p>
+
+
+
+				<p>
+			    </div>
+			</div>
+		</div>
+		<!-- Modal -->
+<div class="modal fade" id="myModal_<%= product.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><%= product.name %></h4>
+      </div>
+      <div class="modal-body">
+        <h5><%= number_to_currency(product.price)%>
+        <p><%= product.description %>
+        <p>Made by: <%= product.brand %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        	<% @product_id = product.id %>
+        	<%= render 'cart_add_form' %> 
+
+      </div>
+    </div>
+  </div>
+</div>
+	<% end %>
+</div>	
